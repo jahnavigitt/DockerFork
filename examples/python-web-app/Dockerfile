@@ -7,6 +7,9 @@ COPY devops /app/
 
 RUN apt-get update && apt-get install -y python3 python3-pip python3-venv
 
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
 SHELL ["/bin/bash", "-c"]
 
 RUN python3 -m venv venv1 && \
@@ -15,7 +18,7 @@ pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
 
-CMD source venv1/bin/activate && python3 manage.py runserver 0.0.0.0:8000
+CMD venv1/bin/python manage.py migrate && venv1/bin/python manage.py runserver 0.0.0.0:8000
 
 
 
